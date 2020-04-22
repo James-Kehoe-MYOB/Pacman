@@ -1,6 +1,8 @@
 ﻿using System;
+using PacmanGame.Data.Enums;
+using PacmanGame.UserInterface;
 
-namespace PacmanGame {
+namespace PacmanGame.Client {
     class EntryPoint {
         static void Main(string[] args) {
             var pacman = new Pacman(2, 2, Direction.Right, new ConsoleUI());

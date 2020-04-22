@@ -1,4 +1,6 @@
 using System;
+using PacmanGame.Business.UserInterface;
+using PacmanGame.Data.Enums;
 
 namespace PacmanGame {
     public class Pacman {

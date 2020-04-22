@@ -1,6 +1,9 @@
 using System;
 using Moq;
 using PacmanGame;
+using PacmanGame.Business.UserInterface;
+using PacmanGame.Data.Enums;
+using PacmanGame.UserInterface;
 using Xunit;
 
 namespace PacmanGameTests {
