@@ -1,5 +1,5 @@
 namespace PacmanGame {
-    public interface ILevel {
+    public interface IGame {
         public bool HasWon { get; set; }
     }
 }

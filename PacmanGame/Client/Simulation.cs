@@ -1,20 +1,19 @@
-namespace PacmanGame {
+namespace PacmanGame.Client {
     public class Simulation {
         public int Lives { get; set; }
         public bool GameOver { get; set; } = false;
+        private IGame Game { get; set; }
 
-        private ILevel Level { get; set; }
-
-        public Simulation(int lives, ILevel level) {
+        public Simulation(int lives, IGame game) {
             Lives = lives;
-            Level = level;
+            Game = game;
         }
 
         public void StartGame() {
             while (Lives > 0) {
                 //Foreach dataset in LevelData
-                //Level.InitBoard(dataset)
-                //Level.RunGame
+                //Game.InitBoard(dataset)
+                //Game.RunGame
                 UpdateLives();
             }
 
@@ -23,7 +22,7 @@ namespace PacmanGame {
         }
 
         public void UpdateLives() {
-            if (Level.HasWon == false) {
+            if (Game.HasWon == false) {
                 Lives--;
             }
         }
