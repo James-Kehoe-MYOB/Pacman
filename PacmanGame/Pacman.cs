@@ -10,16 +10,16 @@ namespace PacmanGame {
         public const char Left = '\u15E4';
         public const char Right = '\u15E7';
         
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public int X { get; set; }
+        public int Y { get; set; }
         private Direction StartingDirection { get; set; }
         public char Display { get; set; }
         
         public Direction currentDirection;
 
-        private int Velocity { get; set; } = 1;
+        public int Velocity { get; set; } = 1;
 
-        private IUserInterface UI { get; set; }
+        public IUserInterface UI { get; set; }
 
         public Pacman(int x, int y, Direction startingDirection, IUserInterface UI) {
             X = x;

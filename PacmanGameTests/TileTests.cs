@@ -1,16 +1,17 @@
+using System.Linq;
 using PacmanGame;
 using Xunit;
 
 namespace PacmanGameTests {
     public class TileTests {
         [Theory(DisplayName = "Tile Displays Correctly According to TileType")]
-        [InlineData(true, Tile.Wall)]
-        [InlineData(false, Tile.Empty)]
+        [InlineData(TileType.Wall)]
+        [InlineData(TileType.Empty)]
 
-        public void TileDisplaysCorrectlyAccordingToTileType(bool isWall, char display) {
-            var tile = new Tile(1, 1, isWall);
+        public void TileDisplaysCorrectlyAccordingToTileType(TileType type) {
+            var tile = new Tile(1, 1, type);
             
-            Assert.Equal(display, tile.Display);
+            Assert.Equal(Tile.TileSpriteMap[type], tile.Display);
         }
     }
 }
