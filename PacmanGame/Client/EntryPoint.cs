@@ -9,11 +9,11 @@ namespace PacmanGame.Client {
             var pacman = new Pacman(2, 2, Direction.Right, new ConsoleUI());
             
             var data = new List<Tile> {
-                new Tile(1, 1, TileType.Wall), new Tile(2, 1, TileType.Wall), new Tile(3, 1, TileType.Wall), new Tile(4, 1, TileType.Wall), new Tile(5, 1, TileType.Wall),
-                new Tile(1, 2, TileType.Wall), new Tile(2, 2, TileType.Empty), new Tile(3, 2, TileType.Empty), new Tile(4, 2, TileType.Empty), new Tile(5, 2, TileType.Wall),
-                new Tile(1, 3, TileType.Wall), new Tile(2, 3, TileType.Empty), new Tile(3, 3, TileType.Wall), new Tile(4, 3, TileType.Empty), new Tile(5, 3, TileType.Wall),
-                new Tile(1, 4, TileType.Wall), new Tile(2, 4, TileType.Empty), new Tile(3, 4, TileType.Empty), new Tile(4, 4, TileType.Empty), new Tile(5, 4, TileType.Wall),
-                new Tile(1, 5, TileType.Wall), new Tile(2, 5, TileType.Wall), new Tile(3, 5, TileType.Wall), new Tile(4, 5, TileType.Wall), new Tile(5, 5, TileType.Wall),
+                new Tile(1, 1, TileState.Wall), new Tile(2, 1, TileState.Wall), new Tile(3, 1, TileState.Wall), new Tile(4, 1, TileState.Wall), new Tile(5, 1, TileState.Wall),
+                new Tile(1, 2, TileState.Wall), new Tile(2, 2, TileState.Empty), new Tile(3, 2, TileState.Empty), new Tile(4, 2, TileState.Empty), new Tile(5, 2, TileState.Wall),
+                new Tile(1, 3, TileState.Wall), new Tile(2, 3, TileState.Empty), new Tile(3, 3, TileState.Wall), new Tile(4, 3, TileState.Empty), new Tile(5, 3, TileState.Wall),
+                new Tile(1, 4, TileState.Wall), new Tile(2, 4, TileState.Empty), new Tile(3, 4, TileState.Empty), new Tile(4, 4, TileState.Empty), new Tile(5, 4, TileState.Wall),
+                new Tile(1, 5, TileState.Wall), new Tile(2, 5, TileState.Wall), new Tile(3, 5, TileState.Wall), new Tile(4, 5, TileState.Wall), new Tile(5, 5, TileState.Wall),
             };
             
             var game = new Game(new GameBoard(5,5, pacman.X, pacman.Y, pacman.currentDirection, data), new ConsoleUI());

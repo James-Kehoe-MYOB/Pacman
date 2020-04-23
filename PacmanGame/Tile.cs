@@ -4,24 +4,23 @@ using System.Collections.Generic;
 namespace PacmanGame {
     public class Tile {
 
-        public static readonly Dictionary<TileType, char> TileSpriteMap = new Dictionary<TileType, char> {
-            {TileType.Empty, ' '},
-            {TileType.Pellet, '*'},
-            {TileType.Wall, '\u00D7'}
+        public static readonly Dictionary<TileState, char> TileSpriteMap = new Dictionary<TileState, char> {
+            {TileState.Empty, ' '},
+            {TileState.Wall, '\u00D7'}
         };
 
-        public TileType Type { get; set; }
+        public TileState State { get; set; }
         public int X { get; private set; }
         public int Y { get; private set; }
 
         public char Display { get; private set; }
 
-        public Tile(int x, int y, TileType type) {
+        public Tile(int x, int y, TileState state) {
             X = x;
             Y = y;
-            Type = type;
+            State = state;
 
-            if (TileSpriteMap.TryGetValue(type, out var display)) {
+            if (TileSpriteMap.TryGetValue(state, out var display)) {
                 Display = display;
             }
             else {

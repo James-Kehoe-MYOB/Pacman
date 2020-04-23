@@ -25,10 +25,10 @@ namespace PacmanGameTests {
 
         public void GameCanInitialiseGameBoardWithGivenBoardData() {
             var boarddata = new List<Tile> {
-                new Tile(1, 1, TileType.Wall),
-                new Tile(2, 1, TileType.Empty),
-                new Tile(1, 2, TileType.Empty),
-                new Tile(2, 2, TileType.Wall)
+                new Tile(1, 1, TileState.Wall),
+                new Tile(2, 1, TileState.Empty),
+                new Tile(1, 2, TileState.Empty),
+                new Tile(2, 2, TileState.Wall)
             };
             
             var board = new GameBoard(2, 2, 1, 1, Direction.Right, boarddata);
@@ -39,12 +39,12 @@ namespace PacmanGameTests {
         }
 
         [Theory(DisplayName = "Pacman can only move if not colliding with wall")]
-        [InlineData(TileType.Wall, 1)]
-        [InlineData(TileType.Empty, 2)]
+        [InlineData(TileState.Wall, 1)]
+        [InlineData(TileState.Empty, 2)]
 
-        public void PacmanCanOnlyMoveIfNotCollidingWithWall(TileType isWall, int x) {
+        public void PacmanCanOnlyMoveIfNotCollidingWithWall(TileState isWall, int x) {
             var boarddata = new List<Tile> {
-                new Tile(1, 1, TileType.Empty),
+                new Tile(1, 1, TileState.Empty),
                 new Tile(2, 1, isWall)
             };
             var board = new GameBoard(2, 1, 1, 1, Direction.Right, boarddata);

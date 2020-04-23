@@ -1,7 +1,6 @@
 namespace PacmanGame {
-    public enum TileType {
+    public enum TileState {
         Wall,
-        Pellet,
         Empty
     }
 }
