@@ -4,14 +4,14 @@ using Xunit;
 
 namespace PacmanGameTests {
     public class TileTests {
-        [Theory(DisplayName = "Tile Displays Correctly According to TileType")]
-        [InlineData(TileType.Wall)]
-        [InlineData(TileType.Empty)]
+        [Theory(DisplayName = "Tile Displays Correctly According to TileState")]
+        [InlineData(TileState.Wall)]
+        [InlineData(TileState.Empty)]
 
-        public void TileDisplaysCorrectlyAccordingToTileType(TileType type) {
-            var tile = new Tile(1, 1, type);
+        public void TileDisplaysCorrectlyAccordingToTileType(TileState state) {
+            var tile = new Tile(1, 1, state);
             
-            Assert.Equal(Tile.TileSpriteMap[type], tile.Display);
+            Assert.Equal(Tile.TileSpriteMap[state], tile.Display);
         }
     }
 }

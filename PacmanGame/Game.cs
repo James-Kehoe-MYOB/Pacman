@@ -41,24 +41,24 @@ namespace PacmanGame {
         }
 
         public void TakeInput(Direction direction) {
-            if (CheckSpot(direction) == TileType.Wall) return;
+            if (CheckSpot(direction) == TileState.Wall) return;
             CurrentDirection = direction;
             CurrentVelocity = 1;
         }
 
         public void Update() {
-            if (CheckSpot(CurrentDirection) == TileType.Wall) {
+            if (CheckSpot(CurrentDirection) == TileState.Wall) {
                 CurrentVelocity = 0;
             }
             Pacman.Update(CurrentDirection, CurrentVelocity);
             Pacman.Move();
         }
 
-        private TileType CheckSpot(Direction direction) {
+        private TileState CheckSpot(Direction direction) {
             var potentialPac = new Pacman(Pacman.X, Pacman.Y, Pacman.currentDirection, Pacman.UI);
             potentialPac.Update(direction, 1);
             potentialPac.Move();
-            return Board.Data.Find(m => m.X == potentialPac.X && m.Y == potentialPac.Y).Type;
+            return Board.Data.Find(m => m.X == potentialPac.X && m.Y == potentialPac.Y).State;
         }
     }
 }
