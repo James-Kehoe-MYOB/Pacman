@@ -11,7 +11,7 @@ namespace PacmanGameTests {
         [Fact(DisplayName = "Running out of Lives Results in a Game Over")]
 
         public void RunningOutOfLivesResultsInAGameOver() {
-            var data = new List<Tile> {
+            var data = new BoardData {
                 new Tile(1, 1, TileState.Empty)
             };
             

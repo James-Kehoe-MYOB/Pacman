@@ -13,20 +13,21 @@ namespace PacmanGame {
         public GameState State { get; set; }
         private Direction CurrentDirection { get; set; }
         private int CurrentVelocity { get; set; }
-        public List<Pellet> PelletList { get; set; } = new List<Pellet>();
+        public List<Pellet> ActivePellets { get; set; } = new List<Pellet>();
         public IInput InputHandler { get; set; }
         public IDisplay DisplayHandler { get; set; }
 
         public Game(GameBoard board, IInput inputHandler, IDisplay displayHandler) {
             InputHandler = inputHandler;
             DisplayHandler = displayHandler;
-            Pacman = new Pacman(board.PacStartX, board.PacStartY, board.PacStartDirection, inputHandler);
+            Pacman = new Pacman(board.PacStartX, board.PacStartY, board.PacStartDirection, inputHandler, displayHandler);
             CurrentDirection = board.PacStartDirection;
             CurrentVelocity = 1;
             LoadBoard(board);
         }
 
         public void Run() {
+            
             var timer = new Timer(200) {Enabled = true, AutoReset = true};
             timer.Elapsed += OnTimedEvent;
             timer.Start();
@@ -34,6 +35,7 @@ namespace PacmanGame {
                 if (!Console.KeyAvailable) {
                     SetDirectionAndVelocity(InputHandler.TakeInput(Pacman));
                 }
+                CheckWin();
             }
             timer.Stop();
             timer.Enabled = false;
@@ -45,7 +47,7 @@ namespace PacmanGame {
         }
 
         public void CheckWin() {
-            if (PelletList.Count == 0) {
+            if (ActivePellets.Count == 0) {
                 HasWon = true;
                 State = GameState.Finished;
             }
@@ -59,19 +61,26 @@ namespace PacmanGame {
             State = GameState.Initialising;
             Board = board;
             ResetPacman();
-            FillPellets();
+            
+            
             DisplayHandler.WriteBoard(board);
+            FillPellets();
+            
+            Console.SetCursorPosition(Pacman.X, Pacman.Y);
+            Console.Write(Pacman.Display);
+            System.Threading.Thread.Sleep(500);
             State = GameState.Running;
         }
 
         private void FillPellets() {
-            PelletList.Clear();
+            ActivePellets.Clear();
             var emptySpots = Board.Data.Where(m => m.State == TileState.Empty);
             foreach (var tile in emptySpots) {
                 if (!(tile.X == Pacman.X && tile.Y == Pacman.Y)) {
-                    PelletList.Add(new Pellet(tile.X, tile.Y));
+                    ActivePellets.Add(new Pellet(tile.X, tile.Y));
                 }
             }
+            DisplayHandler.DisplayPellets(this);
         }
 
         private void SetDirectionAndVelocity(Direction direction) {
@@ -84,20 +93,20 @@ namespace PacmanGame {
             if (CheckCollision(CurrentDirection) == TileState.Wall) {
                 CurrentVelocity = 0;
             }
+            DisplayHandler.DisplayPellets(this);
             Console.SetCursorPosition(Pacman.X, Pacman.Y);
             Console.Write(" ");
             Pacman.Update(CurrentDirection, CurrentVelocity);
             MovePacman(Pacman);
             Console.SetCursorPosition(Pacman.X, Pacman.Y);
             Console.Write(Pacman.Display);
-            if (PelletList.Exists(m => m.X == Pacman.X && m.Y == Pacman.Y)) {
-                PelletList.Remove(PelletList.Find(m => m.X == Pacman.X && m.Y == Pacman.Y));
+            if (ActivePellets.Exists(m => m.X == Pacman.X && m.Y == Pacman.Y)) {
+                ActivePellets.Remove(ActivePellets.Find(m => m.X == Pacman.X && m.Y == Pacman.Y));
             }
-            CheckWin();
         }
 
         private TileState CheckCollision(Direction direction) {
-            var potentialPac = new Pacman(Pacman.X, Pacman.Y, Pacman.currentDirection, Pacman.UI);
+            var potentialPac = new Pacman(Pacman.X, Pacman.Y, Pacman.currentDirection, Pacman.Input, Pacman.DisplayHandler);
             potentialPac.Update(direction, 1);
             MovePacman(potentialPac);
             return Board.Data.Find(m => m.X == potentialPac.X && m.Y == potentialPac.Y).State;

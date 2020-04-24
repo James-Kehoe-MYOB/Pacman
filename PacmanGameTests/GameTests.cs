@@ -12,7 +12,7 @@ namespace PacmanGameTests {
 
         public void GameIsOnlyWonIfAllPelletsAreEaten(int steps, bool hasWon) {
 
-            var boardData = new List<Tile> {
+            var boardData = new BoardData {
                 new Tile(1, 1, TileState.Empty),
                 new Tile(2, 1, TileState.Empty),
                 new Tile(1, 2, TileState.Wall),
@@ -33,7 +33,7 @@ namespace PacmanGameTests {
         [Fact(DisplayName = "Game can initialise gameboard with given boarddata")]
 
         public void GameCanInitialiseGameBoardWithGivenBoardData() {
-            var boarddata = new List<Tile> {
+            var boarddata = new BoardData {
                 new Tile(1, 1, TileState.Wall),
                 new Tile(2, 1, TileState.Empty),
                 new Tile(1, 2, TileState.Empty),
@@ -52,7 +52,7 @@ namespace PacmanGameTests {
         [InlineData(TileState.Empty, 2)]
 
         public void PacmanCanOnlyMoveIfNotCollidingWithWall(TileState isWall, int x) {
-            var boarddata = new List<Tile> {
+            var boarddata = new BoardData {
                 new Tile(1, 1, TileState.Empty),
                 new Tile(2, 1, isWall)
             };
@@ -69,7 +69,7 @@ namespace PacmanGameTests {
 
         [Fact(DisplayName = "Pellet Count Updates When Initialising Board")]
         public void PelletCountUpdatesWhenInitialisingBoard() {
-            var boarddata = new List<Tile> {
+            var boarddata = new BoardData {
                 new Tile(1, 1, TileState.Wall),
                 new Tile(2, 1, TileState.Wall),
                 new Tile(3, 1, TileState.Wall),
@@ -87,12 +87,12 @@ namespace PacmanGameTests {
             
             game.LoadBoard(board);
 
-            Assert.Single(game.PelletList);
+            Assert.Single(game.ActivePellets);
         }
 
         [Fact(DisplayName = "PacmanEatingPelletUpdatesPelletCount")]
         public void PacmanEatingPelletUpdatesPelletCount() {
-            var boarddata = new List<Tile> {
+            var boarddata = new BoardData {
                 new Tile(1, 1, TileState.Wall),
                 new Tile(2, 1, TileState.Wall),
                 new Tile(3, 1, TileState.Wall),
@@ -112,12 +112,12 @@ namespace PacmanGameTests {
             
             game.UpdateBoard();
             
-            Assert.Empty(game.PelletList);
+            Assert.Empty(game.ActivePellets);
         }
 
         [Fact(DisplayName = "Pacman should wrap around the screen")]
         public void PacmanShouldWrapAroundTheScreen() {
-            var boarddata = new List<Tile> {
+            var boarddata = new BoardData {
                 new Tile(1, 1, TileState.Empty),
                 new Tile(2, 1, TileState.Empty),
                 new Tile(1, 2, TileState.Empty),

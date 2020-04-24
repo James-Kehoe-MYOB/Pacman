@@ -8,9 +8,9 @@ namespace PacmanGame {
         public int PacStartX { get; set; }
         public int PacStartY { get; set; }
         public Direction PacStartDirection { get; set; }
-        public List<Tile> Data { get; set; }
+        public BoardData Data { get; set; }
 
-        public GameBoard(int width, int height, int pacStartX, int pacStartY, Direction pacStartDirection, List<Tile> data) {
+        public GameBoard(int width, int height, int pacStartX, int pacStartY, Direction pacStartDirection, BoardData data) {
             Width = width;
             Height = height;
             PacStartX = pacStartX;

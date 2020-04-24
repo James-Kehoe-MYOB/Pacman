@@ -19,32 +19,28 @@ namespace PacmanGame {
 
         public int Velocity { get; set; } = 1;
 
-        public IInput UI { get; set; }
+        public IInput Input { get; set; }
 
-        public Pacman(int x, int y, Direction startingDirection, IInput UI) {
+        public IDisplay DisplayHandler { get; set; }
+
+        public Pacman(int x, int y, Direction startingDirection, IInput input, IDisplay displayHandler) {
             X = x;
             Y = y;
             StartingDirection = startingDirection;
-            this.UI = UI;
+            Input = input;
+            DisplayHandler = displayHandler;
             
-            AssignDisplay(startingDirection);
+            ChangeDirection(startingDirection);
         }
 
-        private void AssignDisplay(Direction direction) {
+        private void ChangeDirection(Direction direction) {
             currentDirection = direction;
-            
-            Display = direction switch {
-                Direction.Up => Up,
-                Direction.Down => Down,
-                Direction.Left => Left,
-                Direction.Right => Right,
-                _ => throw new Exception()
-            };
+            DisplayHandler.UpdatePacmanDisplay(direction, this);
         }
 
         public void Update(Direction direction, int velocity) {
             currentDirection = direction;
-            AssignDisplay(currentDirection);
+            ChangeDirection(currentDirection);
             Velocity = velocity;
         }
 

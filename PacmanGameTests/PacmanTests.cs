@@ -14,7 +14,7 @@ namespace PacmanGameTests {
         [InlineData(Direction.Right, Pacman.Right)]
         
         public void PacmanShouldDisplayCorrectlyGivenItsCurrentDirection(Direction direction, char display) {
-            var pacman = new Pacman(0, 0, direction, new KeyInput());
+            var pacman = new Pacman(0, 0, direction, new KeyInput(), new ConsoleDisplay());
 
             Assert.Equal(display, pacman.Display);
         }
@@ -27,7 +27,7 @@ namespace PacmanGameTests {
 
         public void PacmansDisplayChangesDependingOnKeyPresses(Direction direction, char display) {
             var mock = new Mock<IInput>();
-            var pacman = new Pacman(0, 0, Direction.Right, mock.Object);
+            var pacman = new Pacman(0, 0, Direction.Right, mock.Object, new ConsoleDisplay());
             mock.Setup(m => m.TakeInput(pacman)).Returns(direction);
             pacman.Update(mock.Object.TakeInput(pacman), 1);
             
@@ -47,7 +47,7 @@ namespace PacmanGameTests {
 
         public void PacmanShouldMoveAccordingToItsDirectionAndVelocity(Direction direction, int velocity, int expectedX, int expectedY) {
 
-            var pacman = new Pacman(2, 2, Direction.Right, new KeyInput());
+            var pacman = new Pacman(2, 2, Direction.Right, new KeyInput(), new ConsoleDisplay());
             
             pacman.Update(direction, velocity);
             pacman.Move();
