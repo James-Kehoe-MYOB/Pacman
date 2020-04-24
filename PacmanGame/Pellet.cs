@@ -3,7 +3,7 @@ using System;
 namespace PacmanGame {
     public class Pellet {
 
-        public const char Default = '*';
+        public const char Default = '\u2218';
         public const char Eaten = ' ';
 
         public int X { get; private set; }

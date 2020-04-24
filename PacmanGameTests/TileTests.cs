@@ -1,5 +1,6 @@
 using System.Linq;
 using PacmanGame;
+using PacmanGame.Data.Enums;
 using Xunit;
 
 namespace PacmanGameTests {
@@ -8,7 +9,7 @@ namespace PacmanGameTests {
         [InlineData(TileState.Wall)]
         [InlineData(TileState.Empty)]
 
-        public void TileDisplaysCorrectlyAccordingToTileType(TileState state) {
+        public void TileDisplaysCorrectlyAccordingToTileState(TileState state) {
             var tile = new Tile(1, 1, state);
             
             Assert.Equal(Tile.TileSpriteMap[state], tile.Display);

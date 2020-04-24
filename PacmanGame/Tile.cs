@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
+using PacmanGame.Data.Enums;
 
 namespace PacmanGame {
     public class Tile {
 
         public static readonly Dictionary<TileState, char> TileSpriteMap = new Dictionary<TileState, char> {
             {TileState.Empty, ' '},
-            {TileState.Wall, '\u00D7'}
+            {TileState.Wall, '\u2589'}
         };
 
         public TileState State { get; set; }
         public int X { get; private set; }
         public int Y { get; private set; }
-
         public char Display { get; private set; }
 
         public Tile(int x, int y, TileState state) {

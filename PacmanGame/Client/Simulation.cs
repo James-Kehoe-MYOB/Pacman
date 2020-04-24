@@ -12,8 +12,13 @@ namespace PacmanGame.Client {
         public void StartGame() {
             while (Lives > 0) {
                 //Foreach dataset in LevelData
-                //Game.InitBoard(dataset)
-                //Game.RunGame
+                //Game.LoadBoard(dataset)
+                //Game.Run
+                //if Game.win = false
+                //    lives--
+                //    reset pacman
+                //    game.rungame
+                //
                 UpdateLives();
             }
 

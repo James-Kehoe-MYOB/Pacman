@@ -1,5 +1,5 @@
 using System;
-using PacmanGame.Business.UserInterface;
+using PacmanGame.Client.UserInterface;
 using PacmanGame.Data.Enums;
 
 namespace PacmanGame {
@@ -19,9 +19,9 @@ namespace PacmanGame {
 
         public int Velocity { get; set; } = 1;
 
-        public IUserInterface UI { get; set; }
+        public IInput UI { get; set; }
 
-        public Pacman(int x, int y, Direction startingDirection, IUserInterface UI) {
+        public Pacman(int x, int y, Direction startingDirection, IInput UI) {
             X = x;
             Y = y;
             StartingDirection = startingDirection;

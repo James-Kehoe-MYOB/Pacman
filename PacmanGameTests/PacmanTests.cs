@@ -1,9 +1,8 @@
 using System;
 using Moq;
 using PacmanGame;
-using PacmanGame.Business.UserInterface;
+using PacmanGame.Client.UserInterface;
 using PacmanGame.Data.Enums;
-using PacmanGame.UserInterface;
 using Xunit;
 
 namespace PacmanGameTests {
@@ -15,7 +14,7 @@ namespace PacmanGameTests {
         [InlineData(Direction.Right, Pacman.Right)]
         
         public void PacmanShouldDisplayCorrectlyGivenItsCurrentDirection(Direction direction, char display) {
-            var pacman = new Pacman(0, 0, direction, new ConsoleUI());
+            var pacman = new Pacman(0, 0, direction, new KeyInput());
 
             Assert.Equal(display, pacman.Display);
         }
@@ -27,13 +26,10 @@ namespace PacmanGameTests {
         [InlineData(Direction.Right, Pacman.Right)]
 
         public void PacmansDisplayChangesDependingOnKeyPresses(Direction direction, char display) {
-            var mock = new Mock<IUserInterface>();
-
-            mock.Setup(m => m.TakeInput()).Returns(direction);
-
+            var mock = new Mock<IInput>();
             var pacman = new Pacman(0, 0, Direction.Right, mock.Object);
-            
-            pacman.Update(mock.Object.TakeInput(), 1);
+            mock.Setup(m => m.TakeInput(pacman)).Returns(direction);
+            pacman.Update(mock.Object.TakeInput(pacman), 1);
             
             Assert.Equal(display, pacman.Display);
         }
@@ -50,7 +46,8 @@ namespace PacmanGameTests {
         
 
         public void PacmanShouldMoveAccordingToItsDirectionAndVelocity(Direction direction, int velocity, int expectedX, int expectedY) {
-            var pacman = new Pacman(2, 2, Direction.Right, new ConsoleUI());
+
+            var pacman = new Pacman(2, 2, Direction.Right, new KeyInput());
             
             pacman.Update(direction, velocity);
             pacman.Move();
