@@ -1,4 +1,5 @@
 using System;
+using PacmanGame.Data;
 using PacmanGame.Data.Enums;
 
 
@@ -7,27 +8,32 @@ namespace PacmanGame.Client.UserInterface {
         public void WriteBoard(GameBoard board) {
             Console.CursorVisible = false;
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
             for (int i = 1; i <= board.Height; i++) {
                 for (int j = 1; j <= board.Width; j++) {
-                    Console.SetCursorPosition(j, i);
-                    Console.Write(board.Data.Find(m => m.X == j && m.Y == i).Display);
+                    var currentTile = board.Data.Find(m => m.X == j && m.Y == i);
+                    Console.SetCursorPosition((j*3)-2, i);
+                    if (currentTile.Display == SpriteData.TileWall) {
+                        Console.Write(currentTile.Display);
+                    }
                 }
             }
         }
 
         public void UpdatePacmanDisplay(Direction direction, Pacman pacman) {
             pacman.Display = direction switch {
-                Direction.Up => Pacman.Up,
-                Direction.Down => Pacman.Down,
-                Direction.Left => Pacman.Left,
-                Direction.Right => Pacman.Right,
+                Direction.Up => SpriteData.PacUp,
+                Direction.Down => SpriteData.PacDown,
+                Direction.Left => SpriteData.PacLeft,
+                Direction.Right => SpriteData.PacRight,
                 _ => throw new Exception()
             };
         }
 
         public void DisplayPellets(Game game) {
             foreach (var pellet in game.ActivePellets) {
-                Console.SetCursorPosition(pellet.X, pellet.Y);
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.SetCursorPosition(pellet.X*3-2, pellet.Y);
                 Console.Write(pellet.Display);
             }
         }

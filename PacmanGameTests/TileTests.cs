@@ -1,18 +1,18 @@
-using System.Linq;
 using PacmanGame;
+using PacmanGame.Data;
 using PacmanGame.Data.Enums;
 using Xunit;
 
 namespace PacmanGameTests {
     public class TileTests {
         [Theory(DisplayName = "Tile Displays Correctly According to TileState")]
-        [InlineData(TileState.Wall)]
-        [InlineData(TileState.Empty)]
+        [InlineData(TileState.Wall, SpriteData.TileWall)]
+        [InlineData(TileState.Empty, SpriteData.TileEmpty)]
 
-        public void TileDisplaysCorrectlyAccordingToTileState(TileState state) {
+        public void TileDisplaysCorrectlyAccordingToTileState(TileState state, string display) {
             var tile = new Tile(1, 1, state);
             
-            Assert.Equal(Tile.TileSpriteMap[state], tile.Display);
+            Assert.Equal(display, tile.Display);
         }
     }
 }

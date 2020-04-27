@@ -5,15 +5,10 @@ using PacmanGame.Data.Enums;
 namespace PacmanGame {
     public class Pacman {
 
-        public const char Up = '\u15E2';
-        public const char Down = '\u15E3';
-        public const char Left = '\u15E4';
-        public const char Right = '\u15E7';
-        
         public int X { get; set; }
         public int Y { get; set; }
         private Direction StartingDirection { get; set; }
-        public char Display { get; set; }
+        public string Display { get; set; }
         
         public Direction currentDirection;
 

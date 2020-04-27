@@ -7,7 +7,7 @@ namespace PacmanGameTests {
         [InlineData(false, Pellet.Default)]
         [InlineData(true, Pellet.Eaten)]
 
-        public void PelletDisplaysCorrectlyDependingOnWhetherItHasOrHasNotBeenEaten(bool isEaten, char display) {
+        public void PelletDisplaysCorrectlyDependingOnWhetherItHasOrHasNotBeenEaten(bool isEaten, string display) {
 
             var pellet = new Pellet(1, 1) {IsEaten = isEaten};
 

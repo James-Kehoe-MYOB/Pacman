@@ -1,4 +1,4 @@
-namespace PacmanGame {
+namespace PacmanGame.Data.Enums {
     public enum GameState {
         Initialising,
         Running,

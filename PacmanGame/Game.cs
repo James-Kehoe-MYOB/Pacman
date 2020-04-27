@@ -27,6 +27,15 @@ namespace PacmanGame {
         }
 
         public void Run() {
+            DisplayHandler.WriteBoard(Board);
+            FillPellets();
+            Console.SetCursorPosition(Pacman.X*3-2, Pacman.Y);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(Pacman.Display);
+            
+            System.Threading.Thread.Sleep(1000);
+            Console.Beep();
+            State = GameState.Running;
             
             var timer = new Timer(200) {Enabled = true, AutoReset = true};
             timer.Elapsed += OnTimedEvent;
@@ -61,15 +70,7 @@ namespace PacmanGame {
             State = GameState.Initialising;
             Board = board;
             ResetPacman();
-            
-            
-            DisplayHandler.WriteBoard(board);
             FillPellets();
-            
-            Console.SetCursorPosition(Pacman.X, Pacman.Y);
-            Console.Write(Pacman.Display);
-            System.Threading.Thread.Sleep(500);
-            State = GameState.Running;
         }
 
         private void FillPellets() {
@@ -94,11 +95,12 @@ namespace PacmanGame {
                 CurrentVelocity = 0;
             }
             DisplayHandler.DisplayPellets(this);
-            Console.SetCursorPosition(Pacman.X, Pacman.Y);
-            Console.Write(" ");
+            Console.SetCursorPosition(Pacman.X*3-2, Pacman.Y);
+            Console.Write("   ");
             Pacman.Update(CurrentDirection, CurrentVelocity);
             MovePacman(Pacman);
-            Console.SetCursorPosition(Pacman.X, Pacman.Y);
+            Console.SetCursorPosition(Pacman.X*3-2, Pacman.Y);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write(Pacman.Display);
             if (ActivePellets.Exists(m => m.X == Pacman.X && m.Y == Pacman.Y)) {
                 ActivePellets.Remove(ActivePellets.Find(m => m.X == Pacman.X && m.Y == Pacman.Y));

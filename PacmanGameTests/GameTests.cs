@@ -21,6 +21,7 @@ namespace PacmanGameTests {
 
             var game = new Game(new GameBoard(2, 2, 1, 1, Direction.Right, boardData), new KeyInput(), new ConsoleDisplay());
             
+            
             for (int i = 0; i < steps; i++) {
                 game.UpdateBoard();
             }
