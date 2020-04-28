@@ -4,7 +4,7 @@ using PacmanGame.Business.Characters;
 using PacmanGame.Business.Game;
 using PacmanGame.Business.GhostLogic;
 using PacmanGame.Client.UserInterface;
-using PacmanGame.Data.Board;
+using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
 using PacmanGame.DataAccess.BoardLayoutConverter;
 using Xunit;
@@ -33,7 +33,7 @@ namespace PacmanGameTests {
                 }, Direction.Right, new RandomGhostLogic())
             };
             
-            var game = new Game(new Board(3, 3, 1, 1, Direction.Right, ghosts,layout), new KeyInput(), new ConsoleDisplay());
+            var game = new Game(new Board(3, 3, 1, 1, Direction.Right, ghosts,layout), new KeyInput(), new ConsoleDisplay(), new GameTimer());
             
             Assert.Equal(expectedGhost.X, game.Ghosts[0].X);
             Assert.Equal(expectedGhost.Y, game.Ghosts[0].Y);

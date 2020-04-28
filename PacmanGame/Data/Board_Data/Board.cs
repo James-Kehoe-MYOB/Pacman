@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using PacmanGame.Business.Characters;
 using PacmanGame.Data.Enums;
 
-namespace PacmanGame.Data.Board {
+namespace PacmanGame.Data.Board_Data {
     public class Board {
         public int Width { get; set; }
         public int Height { get; set; }

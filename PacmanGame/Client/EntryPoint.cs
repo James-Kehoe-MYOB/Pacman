@@ -4,35 +4,14 @@ using PacmanGame.Business.Characters;
 using PacmanGame.Business.Game;
 using PacmanGame.Business.GhostLogic;
 using PacmanGame.Client.UserInterface;
-using PacmanGame.Data.Board;
+using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
+using PacmanGame.Data.Maps;
 using PacmanGame.DataAccess.BoardLayoutConverter;
 
 namespace PacmanGame.Client {
     class EntryPoint {
         static void Main(string[] args) {
-            
-            var rawData = "1111111111111111111" +
-                          "1000000001000000001" +
-                          "1011011101011101101" +
-                          "1000000000000000001" +
-                          "1011010111110101101" +
-                          "1000010001000100001" +
-                          "1111011101011101111" +
-                          "1111010000000101111" +
-                          "1111010110110101111" +
-                          "0000000100010000000" +
-                          "1111010111110101111" +
-                          "1111010000000101111" +
-                          "1111010111110101111" +
-                          "1000000001000000001" +
-                          "1011011101011101101" +
-                          "1001000000000001001" +
-                          "1101010111110101011" +
-                          "1000010001000100001" +
-                          "1011111101011111101" +
-                          "1000000000000000001" +
-                          "1111111111111111111";
 
             var rawData3 = "111111111111111111111111111111" +
                            "100000000000000001110001110001" +
@@ -45,24 +24,6 @@ namespace PacmanGame.Client {
                            "101101111010111010101101110101" +
                            "100000000010000010001101110001" +
                            "111111111111111111111111111111";
-
-            var rawData2 = "1111111111110111111111111" +
-                           "1000000001000001000000001" +
-                           "1011010101011101010101101" +
-                           "1000010000000000000100001" +
-                           "1110110111011101110110111" +
-                           "1000000001000001000000001" +
-                           "1011010101011101010101101" +
-                           "1000010000011100000100001" +
-                           "1110110111011101110110111" +
-                           "1000000001000001000000001" +
-                           "1011010101011101010101101" +
-                           "1000010000000000000100001" +
-                           "1110110111011101110110111" +
-                           "1000000001000001000000001" +
-                           "1011010101011101010101101" +
-                           "1000010000000000000100001" +
-                           "1111111111110111111111111";
 
             var rawDataBonus = "1111111111111111111111111" +
                                "1111111111111111111111111" +
@@ -128,19 +89,8 @@ namespace PacmanGame.Client {
             
             var converter = new BinaryToBoardLayoutConverter();
 
-            var data = converter.Convert(21, 19, rawData);
-            var data2 = converter.Convert(17, 25, rawData2);
             var data3 = converter.Convert(11, 30, rawData3);
             
-            var ghostData = new List<Ghost> {
-                new Ghost(new Coords {
-                    x = 5,
-                    y = 3
-                }, Direction.Down, new RandomGhostLogic())
-            };
-            
-            var board = new Board(19, 21, 10, 16, Direction.Right, ghostData,  data);
-            var board2 = new Board(25, 17, 13, 14, Direction.Right, new List<Ghost>(), data2);
             var board3 = new Board(30, 11, 19, 10, Direction.Right,new List<Ghost>(), data3);
 
             var dataBonus = converter.Convert(37, 25, rawDataBonus);
@@ -153,17 +103,19 @@ namespace PacmanGame.Client {
             var display = new ConsoleDisplay();
             display.WriteMenu();
             
-            var game = new Game(board, new KeyInput(), display);
+            var maps = new PrebuiltBinaryMaps();
+
+            var game = new Game(maps.ArcadeMapBoard, new KeyInput(), display, new GameTimer());
 
             var levels = new LevelSet {
-                board,
-                board2,
+                maps.ArcadeMapBoard,
+                maps.AtariMapBoard,
                 board3,
                 boardBonus,
                 boardMYOB
             };
             
-            var sim = new Simulation(3, game, levels);
+            var sim = new Simulation(3, game, levels, display);
             
             sim.StartGame();
 

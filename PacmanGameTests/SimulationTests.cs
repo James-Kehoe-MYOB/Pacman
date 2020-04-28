@@ -6,7 +6,7 @@ using PacmanGame.Business.Game;
 using PacmanGame.Business.GameObjects;
 using PacmanGame.Client;
 using PacmanGame.Client.UserInterface;
-using PacmanGame.Data.Board;
+using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
 using Xunit;
 
@@ -19,7 +19,7 @@ namespace PacmanGameTests {
                 new Tile(1, 1, TileState.Empty)
             };
             
-            var sim = new Simulation(3, new Game(new Board(1, 1, 1, 1, Direction.Right, new List<Ghost>(), data), new KeyInput(), new ConsoleDisplay()), new LevelSet());
+            var sim = new Simulation(3, new Game(new Board(1, 1, 1, 1, Direction.Right, new List<Ghost>(), data), new KeyInput(), new ConsoleDisplay(), new GameTimer()), new LevelSet(), new ConsoleDisplay());
 
             sim.Lives = 0;
             sim.StartGame();
@@ -33,7 +33,7 @@ namespace PacmanGameTests {
             var mock = new Mock<IGame>();
             mock.Setup(m => m.HasWon).Returns(false);
 
-            var sim = new Simulation(3, mock.Object, new LevelSet());
+            var sim = new Simulation(3, mock.Object, new LevelSet(), new ConsoleDisplay());
             sim.UpdateLives();
             
             Assert.Equal(2, sim.Lives);

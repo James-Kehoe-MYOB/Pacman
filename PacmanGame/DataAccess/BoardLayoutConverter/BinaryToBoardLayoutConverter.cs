@@ -1,6 +1,6 @@
 using System;
 using PacmanGame.Business.GameObjects;
-using PacmanGame.Data.Board;
+using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
 
 namespace PacmanGame.DataAccess.BoardLayoutConverter {

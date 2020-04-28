@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using PacmanGame;
 using PacmanGame.Business.GameObjects;
-using PacmanGame.Data.Board;
+using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
 using PacmanGame.DataAccess.BoardLayoutConverter;
 using Xunit;

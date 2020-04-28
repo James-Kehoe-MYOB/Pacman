@@ -5,7 +5,8 @@ using System.Timers;
 using PacmanGame.Business.Characters;
 using PacmanGame.Business.GameObjects;
 using PacmanGame.Client.UserInterface;
-using PacmanGame.Data.Board;
+using PacmanGame.Data;
+using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
 
 namespace PacmanGame.Business.Game {
@@ -14,50 +15,54 @@ namespace PacmanGame.Business.Game {
         public Board Board { get; private set; }
         public Pacman Pacman { get; set; }
         public GameState State { get; set; }
-        private Direction CurrentDirection { get; set; }
-        private int CurrentVelocity { get; set; }
         public List<Pellet> ActivePellets { get; set; } = new List<Pellet>();
         public List<Ghost> Ghosts { get; set; }
         public IInput InputHandler { get; set; }
         public IDisplay DisplayHandler { get; set; }
+        public ITimer GameTimer { get; set; } 
 
-        public Game(Board board, IInput inputHandler, IDisplay displayHandler) {
+        public Game(Board defaultBoard, IInput inputHandler, IDisplay displayHandler, ITimer gameTimer) {
             InputHandler = inputHandler;
             DisplayHandler = displayHandler;
-            Pacman = new Pacman(new Coords {x = board.PacStartX, y = board.PacStartY}, board.PacStartDirection, displayHandler);
-            CurrentDirection = board.PacStartDirection;
-            CurrentVelocity = 1;
-            Ghosts = board.Ghosts;
-            LoadBoard(board);
+            GameTimer = gameTimer;
+            GameTimer.InitTimer(200, Step);
+            Pacman = new Pacman(new Coords {x = defaultBoard.PacStartX, y = defaultBoard.PacStartY}, defaultBoard.PacStartDirection, displayHandler);
+            Ghosts = defaultBoard.Ghosts;
+            HasWon = false;
+            LoadBoard(defaultBoard);
         }
 
         public void Run() {
-            ResetPacman();
+            ResetCharacters();
             DisplayHandler.WriteBoard(Board);
-            DisplayHandler.DisplayPellets(ActivePellets, Ghosts);
-            DisplayHandler.WriteSprite(Pacman);
-            
-            
+            DisplayHandler.WriteGameObjects(Pacman, ActivePellets, Ghosts);
             System.Threading.Thread.Sleep(1000);
-            Console.Beep();
+            
+            GameTimer.Start();
             State = GameState.Running;
             
-            var timer = new Timer(200) {Enabled = true, AutoReset = true};
-            timer.Elapsed += OnTimedEvent;
-            timer.Start();
             while (State == GameState.Running) {
-                if (!Console.KeyAvailable) {
-                    SetDirectionAndVelocity(InputHandler.TakeInput(Pacman));
+                if (InputHandler.KeyAvailable()) {
+                    var newDirection = InputHandler.TakeInput(Pacman);
+                    ChangePacmanDirection(newDirection);
                 }
-                CheckWin();
             }
-            timer.Stop();
-            timer.Enabled = false;
-            timer.Dispose();
+            
+            GameTimer.Stop();
         }
         
-        private void OnTimedEvent(object source, ElapsedEventArgs e) {
+        public void LoadBoard(Board board) {
+            State = GameState.Initialising;
+            Board = board;
+            Ghosts = board.Ghosts;
+            ResetCharacters();
+            FillPellets();
+            HasWon = false;
+        }
+        
+        private void Step(object source, ElapsedEventArgs e) {
             UpdateBoard();
+            CheckWin();
         }
 
         public void CheckWin() {
@@ -65,20 +70,16 @@ namespace PacmanGame.Business.Game {
                 HasWon = true;
                 State = GameState.Finished;
             }
+            else if (PacmanTouchingGhost()) {
+                HasWon = false;
+                State = GameState.Finished;
+            }
             else {
                 HasWon = false;
                 State = GameState.Running;
             }
         }
-
-        public void LoadBoard(Board board) {
-            State = GameState.Initialising;
-            Board = board;
-            //Ghosts = board.Ghosts;
-            ResetPacman();
-            FillPellets();
-        }
-
+        
         private void FillPellets() {
             ActivePellets.Clear();
             var emptySpots = Board.Layout.Where(m => m.State == TileState.Empty);
@@ -87,53 +88,70 @@ namespace PacmanGame.Business.Game {
                     ActivePellets.Add(new Pellet(new Coords{x = tile.X, y = tile.Y}));
                 }
             }
-            DisplayHandler.DisplayPellets(ActivePellets, Ghosts);
         }
 
-        private void SetDirectionAndVelocity(Direction direction) {
-            if (CheckCollision(direction, Pacman) == TileState.Wall) return;
+        private void ChangePacmanDirection(Direction direction) {
+            if (CheckWallCollision(direction, Pacman)) return;
             Pacman.Direction = direction;
             Pacman.Velocity = 1;
         }
 
         public void UpdateBoard() {
-            if (CheckCollision(Pacman.Direction, Pacman) == TileState.Wall) {
+            UpdatePacmanPosition();
+            CheckWin();
+            UpdatePelletList();
+            UpdateGhostPositions();
+            
+            DisplayHandler.WriteGameObjects(Pacman, ActivePellets, Ghosts);
+        }
+
+        private void UpdatePacmanPosition() {
+            if (CheckWallCollision(Pacman.Direction, Pacman)) {
                 Pacman.Velocity = 0;
             }
             Pacman.Sprite = DisplayHandler.UpdatePacmanSprite(Pacman.Direction);
-
-            DisplayHandler.ResetTileDisplay(Pacman.X, Pacman.Y, Board);
+            DisplayHandler.ClearTileDisplay(Pacman.X, Pacman.Y, Board);
             Move(Pacman);
-            DisplayHandler.WriteSprite(Pacman);
-            
+        }
+
+        private bool PacmanTouchingGhost() {
+            return Ghosts.Any(ghost => Pacman.X == ghost.X && Pacman.Y == ghost.Y);
+        }
+
+        private void UpdatePelletList() {
             var pacPosition = ActivePellets.Find(m => m.X == Pacman.X && m.Y == Pacman.Y);
             ActivePellets.Remove(pacPosition);
-            Console.ForegroundColor = ConsoleColor.Green;
+        }
+
+        private void UpdateGhostPositions() {
             foreach (var ghost in Ghosts) {
                 ghost.Velocity = 1;
-                DisplayHandler.ResetTileDisplay(ghost.X, ghost.Y, Board);
-                while (CheckCollision(ghost.Direction, ghost) == TileState.Wall) {
+                DisplayHandler.ClearTileDisplay(ghost.X, ghost.Y, Board);
+                while (CheckWallCollision(ghost.Direction, ghost)) {
                     ghost.Direction = ghost.ChooseDirection();
                 }
                 Move(ghost);
-                DisplayHandler.WriteSprite(ghost);
             }
-            DisplayHandler.DisplayPellets(ActivePellets, Ghosts);
         }
 
-        private TileState CheckCollision(Direction direction, Character character) {
+        private bool CheckWallCollision(Direction direction, Character character) {
             var collision = new Collision(character) {Direction = direction};
             Move(collision);
-            return Board.Layout.Find(m => m.X == collision.X && m.Y == collision.Y).State;
+            return Board.Layout.Find(m => m.X == collision.X && m.Y == collision.Y).State == TileState.Wall;
         }
         
-        private void ResetPacman() {
+        private void ResetCharacters() {
             Pacman.X = Board.PacStartX;
             Pacman.Y = Board.PacStartY;
-            Pacman.Direction = Board.PacStartDirection;
+            Pacman.Update(Board.PacStartDirection, 1);
+            
+            for (int i = 0; i < Ghosts.Count; i++) {
+                Ghosts[i].X = Board.Ghosts[i].X;
+                Ghosts[i].Y = Board.Ghosts[i].Y;
+            }
         }
-        
-        public void Move(Character character) {
+
+        private void Move(Character character) {
             
             switch (character.Direction) {
                 case Direction.Up:

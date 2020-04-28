@@ -1,4 +1,4 @@
-using PacmanGame.Data.Board;
+using PacmanGame.Data.Board_Data;
 
 namespace PacmanGame.DataAccess.BoardLayoutConverter {
     public interface IBoardLayoutConverter {

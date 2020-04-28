@@ -4,21 +4,26 @@ using PacmanGame.Data.Enums;
 
 namespace PacmanGame.Client.UserInterface {
     public class KeyInput : IInput {
+        public bool KeyAvailable() {
+            return Console.KeyAvailable;
+        }
+
         public Direction TakeInput(Pacman pacman) {
             var input = Console.ReadKey(true).Key;
             if (CheckValidInput(input)) {
                 return input switch {
-                    ConsoleKey.LeftArrow => Direction.Left,
                     ConsoleKey.RightArrow => Direction.Right,
+                    ConsoleKey.LeftArrow => Direction.Left,
                     ConsoleKey.UpArrow => Direction.Up,
                     ConsoleKey.DownArrow => Direction.Down,
-                    _ => throw new Exception()
+                    _ => pacman.Direction
                 };
             }
+
             return pacman.Direction;
         }
 
-        private static bool CheckValidInput(ConsoleKey input) {
+        public static bool CheckValidInput(ConsoleKey input) {
             return input == ConsoleKey.LeftArrow
                    || input == ConsoleKey.RightArrow
                    || input == ConsoleKey.UpArrow

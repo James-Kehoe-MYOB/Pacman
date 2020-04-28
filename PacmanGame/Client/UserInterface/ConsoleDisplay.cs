@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using PacmanGame.Business.Characters;
+using PacmanGame.Business.Game;
 using PacmanGame.Business.GameObjects;
 using PacmanGame.Data;
-using PacmanGame.Data.Board;
+using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
 
 
@@ -14,8 +15,28 @@ namespace PacmanGame.Client.UserInterface {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(0,3);
             Console.WriteLine(SpriteData.splashScreen);
-            System.Threading.Thread.Sleep(5000);
+            Console.SetCursorPosition(19,10);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("Press any key to start!");
+            Console.ReadKey();
             Console.Clear();
+        }
+
+        public void WriteLives(int lives) {
+            Console.SetCursorPosition(25, 10);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write($"{SpriteData.PacRight}");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($"\u00D7 {lives}");
+            System.Threading.Thread.Sleep(1500);
+        }
+
+        public void WriteGameObjects(Pacman pacman, List<Pellet> pellets, List<Ghost> ghosts) {
+            DisplayPellets(pellets);
+            WriteSprite(pacman);
+            foreach (var ghost in ghosts) {
+                WriteSprite(ghost);
+            }
         }
 
         public void WriteBoard(Board board) {
@@ -33,7 +54,6 @@ namespace PacmanGame.Client.UserInterface {
             }
             Console.SetCursorPosition(1, board.Height+1);
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("Lives: ");
         }
 
         public string UpdatePacmanSprite(Direction direction) {
@@ -47,23 +67,12 @@ namespace PacmanGame.Client.UserInterface {
             return sprite;
         }
 
-        public void DisplayPellets(List<Pellet> activePellets, List<Ghost> ghosts) {
+        public void DisplayPellets(List<Pellet> activePellets) {
             foreach (var pellet in activePellets) {
-                foreach (var ghost in ghosts) {
-                    if (!(pellet.X == ghost.X && pellet.Y == ghost.Y)) {
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.SetCursorPosition(pellet.X*3-2, pellet.Y);
-                        Console.Write(pellet.Sprite);
-                    }
-                }
-                
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.SetCursorPosition(pellet.X*3-2, pellet.Y);
+                Console.Write(pellet.Sprite);
             }
-        }
-
-        public void WritePacman(Pacman pacman) {
-            Console.SetCursorPosition(pacman.X*3-2, pacman.Y);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(pacman.Sprite);
         }
 
         public void WriteSprite(Character character) {
@@ -72,7 +81,7 @@ namespace PacmanGame.Client.UserInterface {
             Console.WriteLine(character.Sprite);
         }
 
-        public void ResetTileDisplay(int x, int y, Board board) {
+        public void ClearTileDisplay(int x, int y, Board board) {
             Console.SetCursorPosition(x*3-2, y);
             var tile = board.Layout.Find(m => m.X == x && m.Y == y);
             Console.Write(tile.Display);

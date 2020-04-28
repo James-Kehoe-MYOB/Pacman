@@ -1,11 +1,14 @@
 using System.Collections.Generic;
+using Moq;
 using PacmanGame;
 using PacmanGame.Business.Characters;
 using PacmanGame.Business.Game;
 using PacmanGame.Business.GameObjects;
+using PacmanGame.Business.GhostLogic;
 using PacmanGame.Client.UserInterface;
-using PacmanGame.Data.Board;
+using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
+using PacmanGame.DataAccess.BoardLayoutConverter;
 using Xunit;
 
 namespace PacmanGameTests {
@@ -23,7 +26,7 @@ namespace PacmanGameTests {
                 new Tile(2, 2, TileState.Wall)
             };
 
-            var game = new Game(new Board(2, 2, 1, 1, Direction.Right, new List<Ghost>(),  boardData), new KeyInput(), new ConsoleDisplay());
+            var game = new Game(new Board(2, 2, 1, 1, Direction.Right, new List<Ghost>(),  boardData), new KeyInput(), new ConsoleDisplay(), new GameTimer());
             
             
             for (int i = 0; i < steps; i++) {
@@ -47,7 +50,7 @@ namespace PacmanGameTests {
             
             var board = new Board(2, 2, 1, 1, Direction.Right, new List<Ghost>(),  boarddata);
             
-            var game = new Game(board, new KeyInput(), new ConsoleDisplay());
+            var game = new Game(board, new KeyInput(), new ConsoleDisplay(), new GameTimer());
 
             Assert.Equal(board, game.Board);
         }
@@ -63,7 +66,7 @@ namespace PacmanGameTests {
             };
             var board = new Board(2, 1, 1, 1, Direction.Right, new List<Ghost>(),  boarddata);
             
-            var game = new Game(board, new KeyInput(), new ConsoleDisplay());
+            var game = new Game(board, new KeyInput(), new ConsoleDisplay(), new GameTimer());
 
             game.UpdateBoard();
             
@@ -88,7 +91,7 @@ namespace PacmanGameTests {
             
             var board = new Board(3, 3, 2, 2, Direction.Right, new List<Ghost>(),  boarddata);
             
-            var game = new Game(board, new KeyInput(), new ConsoleDisplay());
+            var game = new Game(board, new KeyInput(), new ConsoleDisplay(), new GameTimer());
             
             game.LoadBoard(board);
 
@@ -111,7 +114,7 @@ namespace PacmanGameTests {
             
             var board = new Board(3, 3, 2, 2, Direction.Right, new List<Ghost>(),  boarddata);
             
-            var game = new Game(board, new KeyInput(), new ConsoleDisplay());
+            var game = new Game(board, new KeyInput(), new ConsoleDisplay(), new GameTimer());
             
             game.LoadBoard(board);
             
@@ -131,12 +134,38 @@ namespace PacmanGameTests {
             
             var board = new Board(2, 2, 2, 1, Direction.Up, new List<Ghost>(),  boarddata);
             
-            var game = new Game(board, new KeyInput(), new ConsoleDisplay());
+            var game = new Game(board, new KeyInput(), new ConsoleDisplay(), new GameTimer());
 
             game.UpdateBoard();
             
             Assert.Equal(2, game.Pacman.X);
             Assert.Equal(2, game.Pacman.Y);
+        }
+
+        [Fact(DisplayName = "Game Ends if Pacman Collides with Ghost")]
+
+        public void GameEndsIfPacmanCollidesWithGhost() {
+            var rawData = "000";
+            var converter = new BinaryToBoardLayoutConverter();
+
+            var layout = converter.Convert(1, 3, rawData);
+            var mock = new Mock<IGhostLogic>();
+            mock.Setup(m => m.ChooseDirection()).Returns(Direction.Left);
+
+            var ghostlist = new List<Ghost> {
+                new Ghost(new Coords {x = 3, y = 1}, Direction.Left, mock.Object)
+            };
+            
+            var mockInput = new Mock<IInput>();
+            mockInput.Setup(m => m.KeyAvailable()).Returns(false);
+            
+            var board = new Board(3, 1, 1, 1, Direction.Right, ghostlist, layout);
+
+            var game = new Game(board, mockInput.Object, new ConsoleDisplay(), new UpdateOnceTimer());
+            
+            game.Run();
+            
+            Assert.NotEqual(GameState.Running, game.State);
         }
     }
 }
