@@ -1,11 +1,13 @@
 using System;
+using PacmanGame.Business.GameObjects;
+using PacmanGame.Data.Board;
 using PacmanGame.Data.Enums;
 
-namespace PacmanGame {
-    public class BinaryToBoardDataConverter : IBoardDataConverter {
+namespace PacmanGame.DataAccess.BoardLayoutConverter {
+    public class BinaryToBoardLayoutConverter : IBoardLayoutConverter {
 
-        public BoardData Convert(int height, int width, string rawData) {
-            var returnData = new BoardData();
+        public BoardLayout Convert(int height, int width, string rawData) {
+            var returnData = new BoardLayout();
 
             var x = 1;
             var y = 1;

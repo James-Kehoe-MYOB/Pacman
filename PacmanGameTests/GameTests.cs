@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using PacmanGame;
+using PacmanGame.Business.Characters;
+using PacmanGame.Business.Game;
+using PacmanGame.Business.GameObjects;
 using PacmanGame.Client.UserInterface;
+using PacmanGame.Data.Board;
 using PacmanGame.Data.Enums;
 using Xunit;
 
@@ -12,14 +16,14 @@ namespace PacmanGameTests {
 
         public void GameIsOnlyWonIfAllPelletsAreEaten(int steps, bool hasWon) {
 
-            var boardData = new BoardData {
+            var boardData = new BoardLayout {
                 new Tile(1, 1, TileState.Empty),
                 new Tile(2, 1, TileState.Empty),
                 new Tile(1, 2, TileState.Wall),
                 new Tile(2, 2, TileState.Wall)
             };
 
-            var game = new Game(new GameBoard(2, 2, 1, 1, Direction.Right, boardData), new KeyInput(), new ConsoleDisplay());
+            var game = new Game(new Board(2, 2, 1, 1, Direction.Right, new List<Ghost>(),  boardData), new KeyInput(), new ConsoleDisplay());
             
             
             for (int i = 0; i < steps; i++) {
@@ -34,14 +38,14 @@ namespace PacmanGameTests {
         [Fact(DisplayName = "Game can initialise gameboard with given boarddata")]
 
         public void GameCanInitialiseGameBoardWithGivenBoardData() {
-            var boarddata = new BoardData {
+            var boarddata = new BoardLayout {
                 new Tile(1, 1, TileState.Wall),
                 new Tile(2, 1, TileState.Empty),
                 new Tile(1, 2, TileState.Empty),
                 new Tile(2, 2, TileState.Wall)
             };
             
-            var board = new GameBoard(2, 2, 1, 1, Direction.Right, boarddata);
+            var board = new Board(2, 2, 1, 1, Direction.Right, new List<Ghost>(),  boarddata);
             
             var game = new Game(board, new KeyInput(), new ConsoleDisplay());
 
@@ -53,11 +57,11 @@ namespace PacmanGameTests {
         [InlineData(TileState.Empty, 2)]
 
         public void PacmanCanOnlyMoveIfNotCollidingWithWall(TileState isWall, int x) {
-            var boarddata = new BoardData {
+            var boarddata = new BoardLayout {
                 new Tile(1, 1, TileState.Empty),
                 new Tile(2, 1, isWall)
             };
-            var board = new GameBoard(2, 1, 1, 1, Direction.Right, boarddata);
+            var board = new Board(2, 1, 1, 1, Direction.Right, new List<Ghost>(),  boarddata);
             
             var game = new Game(board, new KeyInput(), new ConsoleDisplay());
 
@@ -70,7 +74,7 @@ namespace PacmanGameTests {
 
         [Fact(DisplayName = "Pellet Count Updates When Initialising Board")]
         public void PelletCountUpdatesWhenInitialisingBoard() {
-            var boarddata = new BoardData {
+            var boarddata = new BoardLayout {
                 new Tile(1, 1, TileState.Wall),
                 new Tile(2, 1, TileState.Wall),
                 new Tile(3, 1, TileState.Wall),
@@ -82,7 +86,7 @@ namespace PacmanGameTests {
                 new Tile(3, 3, TileState.Wall)
             };
             
-            var board = new GameBoard(3, 3, 2, 2, Direction.Right, boarddata);
+            var board = new Board(3, 3, 2, 2, Direction.Right, new List<Ghost>(),  boarddata);
             
             var game = new Game(board, new KeyInput(), new ConsoleDisplay());
             
@@ -93,7 +97,7 @@ namespace PacmanGameTests {
 
         [Fact(DisplayName = "PacmanEatingPelletUpdatesPelletCount")]
         public void PacmanEatingPelletUpdatesPelletCount() {
-            var boarddata = new BoardData {
+            var boarddata = new BoardLayout {
                 new Tile(1, 1, TileState.Wall),
                 new Tile(2, 1, TileState.Wall),
                 new Tile(3, 1, TileState.Wall),
@@ -105,7 +109,7 @@ namespace PacmanGameTests {
                 new Tile(3, 3, TileState.Wall)
             };
             
-            var board = new GameBoard(3, 3, 2, 2, Direction.Right, boarddata);
+            var board = new Board(3, 3, 2, 2, Direction.Right, new List<Ghost>(),  boarddata);
             
             var game = new Game(board, new KeyInput(), new ConsoleDisplay());
             
@@ -118,14 +122,14 @@ namespace PacmanGameTests {
 
         [Fact(DisplayName = "Pacman should wrap around the screen")]
         public void PacmanShouldWrapAroundTheScreen() {
-            var boarddata = new BoardData {
+            var boarddata = new BoardLayout {
                 new Tile(1, 1, TileState.Empty),
                 new Tile(2, 1, TileState.Empty),
                 new Tile(1, 2, TileState.Empty),
                 new Tile(2, 2, TileState.Empty),
             };
             
-            var board = new GameBoard(2, 2, 2, 1, Direction.Up, boarddata);
+            var board = new Board(2, 2, 2, 1, Direction.Up, new List<Ghost>(),  boarddata);
             
             var game = new Game(board, new KeyInput(), new ConsoleDisplay());
 

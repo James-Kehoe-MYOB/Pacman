@@ -1,22 +1,25 @@
 using System.Collections.Generic;
+using PacmanGame.Business.Characters;
 using PacmanGame.Data.Enums;
 
-namespace PacmanGame {
-    public class GameBoard {
+namespace PacmanGame.Data.Board {
+    public class Board {
         public int Width { get; set; }
         public int Height { get; set; }
         public int PacStartX { get; set; }
         public int PacStartY { get; set; }
         public Direction PacStartDirection { get; set; }
-        public BoardData Data { get; set; }
+        public List<Ghost> Ghosts { get; set; }
+        public BoardLayout Layout { get; set; }
 
-        public GameBoard(int width, int height, int pacStartX, int pacStartY, Direction pacStartDirection, BoardData data) {
+        public Board(int width, int height, int pacStartX, int pacStartY, Direction pacStartDirection, List<Ghost> ghosts, BoardLayout layout) {
             Width = width;
             Height = height;
             PacStartX = pacStartX;
             PacStartY = pacStartY;
             PacStartDirection = pacStartDirection;
-            Data = data;
+            Ghosts = ghosts;
+            Layout = layout;
         }
     }
 }

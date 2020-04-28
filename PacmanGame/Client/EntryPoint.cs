@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using PacmanGame.Business.Characters;
+using PacmanGame.Business.Game;
+using PacmanGame.Business.GhostLogic;
 using PacmanGame.Client.UserInterface;
+using PacmanGame.Data.Board;
 using PacmanGame.Data.Enums;
+using PacmanGame.DataAccess.BoardLayoutConverter;
 
 namespace PacmanGame.Client {
     class EntryPoint {
@@ -119,45 +124,49 @@ namespace PacmanGame.Client {
                               "1111111111111111111111111111111111111111" +
                               "1111111111111111111111111111111111111111";
 
-            var splashScreen = "██████╗  █████╗  ██████╗███╗   ███╗ █████╗ ███╗   ██╗\n" +
-                               "██╔══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗████╗  ██║\n" +
-                               "██████╔╝███████║██║     ██╔████╔██║███████║██╔██╗ ██║\n" +
-                               "██╔═══╝ ██╔══██║██║     ██║╚██╔╝██║██╔══██║██║╚██╗██║\n" +
-                               "██║     ██║  ██║╚██████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║\n" +
-                               "╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝\n";
             
-            var converter = new BinaryToBoardDataConverter();
+            
+            var converter = new BinaryToBoardLayoutConverter();
 
             var data = converter.Convert(21, 19, rawData);
             var data2 = converter.Convert(17, 25, rawData2);
             var data3 = converter.Convert(11, 30, rawData3);
-            var board = new GameBoard(19, 21, 10, 16, Direction.Right, data);
-            var board2 = new GameBoard(25, 17, 13, 14, Direction.Right, data2);
-            var board3 = new GameBoard(30, 11, 19, 10, Direction.Right, data3);
+            
+            var ghostData = new List<Ghost> {
+                new Ghost(new Coords {
+                    x = 5,
+                    y = 3
+                }, Direction.Down, new RandomGhostLogic())
+            };
+            
+            var board = new Board(19, 21, 10, 16, Direction.Right, ghostData,  data);
+            var board2 = new Board(25, 17, 13, 14, Direction.Right, new List<Ghost>(), data2);
+            var board3 = new Board(30, 11, 19, 10, Direction.Right,new List<Ghost>(), data3);
 
             var dataBonus = converter.Convert(37, 25, rawDataBonus);
-            var boardBonus = new GameBoard(25, 37, 13, 3, Direction.Right, dataBonus);
+            var boardBonus = new Board(25, 37, 13, 3, Direction.Right,new List<Ghost>(),  dataBonus);
 
             var dataMYOB = converter.Convert(21, 40, rawDataMYOB);
-            var boardMYOB = new GameBoard(40, 21, 6, 8, Direction.Right, dataMYOB);
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(splashScreen);
-            System.Threading.Thread.Sleep(5000);
-            Console.Clear();
+            var boardMYOB = new Board(40, 21, 6, 8, Direction.Right,new List<Ghost>(),  dataMYOB);
             
-            var game = new Game(board, new KeyInput(), new ConsoleDisplay());
+            
+            var display = new ConsoleDisplay();
+            display.WriteMenu();
+            
+            var game = new Game(board, new KeyInput(), display);
 
+            var levels = new LevelSet {
+                board,
+                board2,
+                board3,
+                boardBonus,
+                boardMYOB
+            };
             
-            game.Run();
-            game.LoadBoard(board2);
-            game.Run();
-            game.LoadBoard(board3);
-            game.Run();
-            game.LoadBoard(boardBonus);
-            game.Run();
-            game.LoadBoard(boardMYOB);
-            game.Run();
+            var sim = new Simulation(3, game, levels);
+            
+            sim.StartGame();
+
         }
     }
 }

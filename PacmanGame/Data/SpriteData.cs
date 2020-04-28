@@ -7,7 +7,15 @@ namespace PacmanGame.Data {
 
         public const string TileEmpty = "   ";
         public const string TileWall = "\u2588\u2588\u2588";
-
+        
+        public const string Ghost = " \u237E ";
         public const string Pellet = " \u2218 ";
+        
+        public const string splashScreen = "    ██████╗  █████╗  ██████╗███╗   ███╗ █████╗ ███╗   ██╗\n" +
+                                           "    ██╔══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗████╗  ██║\n" +
+                                           "    ██████╔╝███████║██║     ██╔████╔██║███████║██╔██╗ ██║\n" +
+                                           "    ██╔═══╝ ██╔══██║██║     ██║╚██╔╝██║██╔══██║██║╚██╗██║\n" +
+                                           "    ██║     ██║  ██║╚██████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║\n" +
+                                           "    ╚═╝     ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝\n";
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using PacmanGame.Business.Characters;
 using PacmanGame.Data.Enums;
 
 namespace PacmanGame.Client.UserInterface {
@@ -14,10 +15,10 @@ namespace PacmanGame.Client.UserInterface {
                     _ => throw new Exception()
                 };
             }
-            return pacman.currentDirection;
+            return pacman.Direction;
         }
 
-        private bool CheckValidInput(ConsoleKey input) {
+        private static bool CheckValidInput(ConsoleKey input) {
             return input == ConsoleKey.LeftArrow
                    || input == ConsoleKey.RightArrow
                    || input == ConsoleKey.UpArrow

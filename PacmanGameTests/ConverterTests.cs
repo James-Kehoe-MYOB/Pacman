@@ -2,13 +2,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using PacmanGame;
+using PacmanGame.Business.GameObjects;
+using PacmanGame.Data.Board;
 using PacmanGame.Data.Enums;
+using PacmanGame.DataAccess.BoardLayoutConverter;
 using Xunit;
 
 namespace PacmanGameTests {
     public class ConverterTests {
 
-        [Fact(DisplayName = "Inputting Raw Data returns BoardData Object")]
+        [Fact(DisplayName = "Inputting Raw Layout returns BoardLayout Object")]
 
         public void InputtingRawDataReturnsBoardDataObject() {
             var rawData = "01" +
@@ -16,9 +19,9 @@ namespace PacmanGameTests {
             var height = 2;
             var width = 2;
             
-            var converter = new BinaryToBoardDataConverter();
+            var converter = new BinaryToBoardLayoutConverter();
 
-            var expectedData = new BoardData {
+            var expectedData = new BoardLayout {
                 new Tile(1, 1, TileState.Empty),
                 new Tile(2, 1, TileState.Wall),
                 new Tile(1, 2, TileState.Wall),
