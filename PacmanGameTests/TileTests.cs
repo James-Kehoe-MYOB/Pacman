@@ -1,4 +1,5 @@
 using PacmanGame;
+using PacmanGame.Business.GameObjects;
 using PacmanGame.Data;
 using PacmanGame.Data.Enums;
 using Xunit;
