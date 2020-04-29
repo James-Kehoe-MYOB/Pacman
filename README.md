@@ -8,3 +8,8 @@ Here are some instructions for building and running the Pacman Solution:
     - this is because the game will not display properly if the window size is too small
 2. cd into the PacmanGame directory and run "dotnet run" to start the game
 3. Once running, do not resize the terminal window
+
+
+Playing Pacman:
+Use the arrow keys to control Pacman. 
+Try to eat all the pellets in the level without being touched by the ghosts to advance to the next level.
