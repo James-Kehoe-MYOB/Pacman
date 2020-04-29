@@ -8,9 +8,9 @@ namespace PacmanGame.Business.GameObjects {
         public int X { get; private set; }
         public int Y { get; private set; }
 
-        public Pellet(Coords coords) {
-            X = coords.x;
-            Y = coords.y;
+        public Pellet(int x, int y) {
+            X = x;
+            Y = y;
 
         }
 

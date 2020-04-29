@@ -3,29 +3,27 @@ using PacmanGame.Client.UserInterface;
 using PacmanGame.Data.Enums;
 
 namespace PacmanGame.Business.Characters {
-    public class Pacman : Character {
+    public class Pacman : ICharacter {
 
         public int X { get; set; }
         public int Y { get; set; }
         public Direction Direction { get; set; }
-
-        public ConsoleColor Colour { get; set; } = ConsoleColor.Yellow;
+        public ConsoleColor Colour { get; } = ConsoleColor.Yellow;
         public string Sprite { get; set; }
         public int Velocity { get; set; } = 1;
+        private IOutput Output { get; }
 
-        public IDisplay Display { get; set; }
-
-        public Pacman(Coords coords, Direction startingDirection, IDisplay display) {
-            X = coords.x;
-            Y = coords.y;
-            Display = display;
+        public Pacman(int x, int y, Direction startingDirection, IOutput output) {
+            X = x;
+            Y = y;
+            Output = output;
             Direction = startingDirection;
-            Sprite = Display.UpdatePacmanSprite(startingDirection);
+            Sprite = Output.UpdatePacmanSprite(startingDirection);
         }
 
         public void Update(Direction direction, int velocity) {
             Direction = direction;
-            Sprite = Display.UpdatePacmanSprite(direction);
+            Sprite = Output.UpdatePacmanSprite(direction);
             Velocity = velocity;
         }
     }

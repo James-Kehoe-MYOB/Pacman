@@ -18,4 +18,22 @@
       <ProjectReference Include="..\PacmanGame\PacmanGame.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="TestData\SuccessfulConfig.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\InvalidInputConfig.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\InvalidLevelPackConfig.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\InvalidLivesConfig.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="TestData\InvalidOutputConfig.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

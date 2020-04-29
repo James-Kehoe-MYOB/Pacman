@@ -1,10 +1,7 @@
-using System;
-using System.Threading;
 using System.Timers;
 
-namespace PacmanGame {
+namespace PacmanGame.Business.Engine.Timer {
     public interface ITimer {
-        public int Interval { get; set; }
 
         void InitTimer(int interval, ElapsedEventHandler function);
         

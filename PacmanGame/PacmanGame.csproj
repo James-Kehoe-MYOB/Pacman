@@ -5,4 +5,17 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.3.20215.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="GameSettingsConfig.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="Data\GameSettingsConfig.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
 </Project>

@@ -1,24 +1,23 @@
 using System.Collections.Generic;
 using PacmanGame.Business.Characters;
 using PacmanGame.Business.GhostLogic;
-using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
-using PacmanGame.DataAccess.BoardLayoutConverter;
 
 namespace PacmanGame.Data.Maps {
-    public class PrebuiltBinaryMaps {
+    public static class PrebuiltBinaryMaps {
         private const int ArcadeMapHeight = 21;
         private const int ArcadeMapWidth = 19;
         private const int ArcadeMapPacStartX = 10;
         private const int ArcadeMapPacStartY = 16;
         private const Direction ArcadeMapPacStartDirection = Direction.Right;
+        private static readonly List<LevelSetName> ArcadeMapSets = new List<LevelSetName>{LevelSetName.Basic};
 
-        private static List<Ghost> ArcadeMapGhosts = new List<Ghost> {
-            new Ghost(new Coords {x = 5, y = 3}, Direction.Right, new RandomGhostLogic()),
-            new Ghost(new Coords {x = 15, y = 3}, Direction.Left, new RandomGhostLogic())
+        private static readonly List<Ghost> ArcadeMapGhosts = new List<Ghost> {
+            new Ghost(5, 3, new RandomGhostLogic()),
+            new Ghost(15, 3, new RandomGhostLogic())
         };
 
-        private const string ArcadeMapData = "1111111111111111111" +
+        private const string ArcadeMapBinaryData = "1111111111111111111" +
                                              "1000000001000000001" +
                                              "1011011101011101101" +
                                              "1000000000000000001" +
@@ -40,23 +39,22 @@ namespace PacmanGame.Data.Maps {
                                              "1000000000000000001" +
                                              "1111111111111111111";
         
-        private static BinaryToBoardLayoutConverter _converter = new BinaryToBoardLayoutConverter();
-        private static BoardLayout ArcadeMapLayout = _converter.Convert(ArcadeMapHeight, ArcadeMapWidth, ArcadeMapData);
-        
-        public Board ArcadeMapBoard = new Board(ArcadeMapWidth, ArcadeMapHeight, ArcadeMapPacStartX, ArcadeMapPacStartY, ArcadeMapPacStartDirection, ArcadeMapGhosts, ArcadeMapLayout);
-        
+        public static readonly MapData ArcadeMap = new MapData(ArcadeMapSets, ArcadeMapHeight, ArcadeMapWidth, 
+            ArcadeMapPacStartX, ArcadeMapPacStartY, ArcadeMapPacStartDirection, ArcadeMapGhosts, ArcadeMapBinaryData);
+
         private const int AtariMapHeight = 17;
         private const int AtariMapWidth = 25;
         private const int AtariMapPacStartX = 13;
         private const int AtariMapPacStartY = 14;
         private const Direction AtariMapPacStartDirection = Direction.Right;
+        private static readonly List<LevelSetName> AtariMapSets = new List<LevelSetName>{LevelSetName.Basic}; 
 
-        private static List<Ghost> AtariMapGhosts = new List<Ghost> {
-            new Ghost(new Coords {x = 6, y = 2}, Direction.Right, new RandomGhostLogic()),
-            new Ghost(new Coords {x = 20, y = 2}, Direction.Left, new RandomGhostLogic())
+        private static readonly List<Ghost> AtariMapGhosts = new List<Ghost> {
+            new Ghost(6, 2, new RandomGhostLogic()),
+            new Ghost(20, 2, new RandomGhostLogic())
         };
 
-        private const string AtariMapData = "1111111111110111111111111" +
+        private const string AtariMapBinaryData = "1111111111110111111111111" +
                                             "1000000001000001000000001" +
                                             "1011010101011101010101101" +
                                             "1000010000000000000100001" +
@@ -74,8 +72,69 @@ namespace PacmanGame.Data.Maps {
                                             "1000010000000000000100001" +
                                             "1111111111110111111111111";
         
-        private static BoardLayout AtariMapLayout = _converter.Convert(AtariMapHeight, AtariMapWidth, AtariMapData);
+        public static MapData AtariMap = new MapData(AtariMapSets, AtariMapHeight, AtariMapWidth, 
+            AtariMapPacStartX, AtariMapPacStartY, AtariMapPacStartDirection, AtariMapGhosts, AtariMapBinaryData);
+
+        private const int GoogleMapHeight = 11;
+        private const int GoogleMapWidth = 30;
+        private const int GoogleMapPacStartX = 19;
+        private const int GoogleMapPacStartY = 10;
+        private const Direction GoogleMapPacStartDirection = Direction.Right;
+        private static readonly List<LevelSetName> GoogleMapSets = new List<LevelSetName>{LevelSetName.Basic};
+
+        private static readonly List<Ghost> GoogleMapGhosts = new List<Ghost> {
+            new Ghost(5, 2, new RandomGhostLogic()),
+            new Ghost(25, 3, new RandomGhostLogic())
+        };
+
+        private const string GoogleMapBinaryData = "111111111111111111111111111111" +
+                                             "100000000000000001110001110001" +
+                                             "101011110111111101110100000101" +
+                                             "100010000000000000000101110001" +
+                                             "111010110111011101110101110111" +
+                                             "000010010111011100000101000000" +
+                                             "111011110111011101110101110111" +
+                                             "100000000000000000100000000001" +
+                                             "101101111010111010101101110101" +
+                                             "100000000010000010001101110001" +
+                                             "111111111111111111111111111111";
         
-        public Board AtariMapBoard = new Board(AtariMapWidth, AtariMapHeight, AtariMapPacStartX, AtariMapPacStartY, AtariMapPacStartDirection, AtariMapGhosts, AtariMapLayout);
+        public static MapData GoogleMap = new MapData(GoogleMapSets, GoogleMapHeight, GoogleMapWidth, 
+            GoogleMapPacStartX, GoogleMapPacStartY, GoogleMapPacStartDirection, GoogleMapGhosts, GoogleMapBinaryData);
+
+        private const int MYOBMapHeight = 15;
+        private const int MYOBMapWidth = 36;
+        private const int MYOBMapPacStartX = 4;
+        private const int MYOBMapPacStartY = 5;
+        private const Direction MYOBMapPacStartDirection = Direction.Right;
+        private static readonly List<LevelSetName> MYOBMapSets = new List<LevelSetName>{LevelSetName.Bonus};
+        
+        private static List<Ghost> MYOBMapGhosts = new List<Ghost>();
+
+        private const string MYOBMapBinaryData = "111111111111111111111111111111111111" +
+                                           "111111111111111111111111111001111111" +
+                                           "111111111111111111111111111001111111" +
+                                           "111111111111111111111111111001111111" +
+                                           "111000010001101111001000011000001111" +
+                                           "110000000100100110000011000000100111" +
+                                           "110011001110000110010111101001110011" +
+                                           "110011001110110010110111101001110011" +
+                                           "110011001110110000110111001001110011" +
+                                           "110011001110111000110000001000100111" +
+                                           "110111101110111001111000111011001111" +
+                                           "111111111111111001111111111111111111" +
+                                           "111111111111110011111111111111111111" +
+                                           "111111111111110111111111111111111111" +
+                                           "111111111111111111111111111111111111";
+        
+        public static MapData MYOBMap = new MapData(MYOBMapSets, MYOBMapHeight, MYOBMapWidth, 
+            MYOBMapPacStartX, MYOBMapPacStartY, MYOBMapPacStartDirection, MYOBMapGhosts, MYOBMapBinaryData);
+
+        public static List<MapData> MapData = new List<MapData> {
+            ArcadeMap,
+            AtariMap,
+            GoogleMap,
+            MYOBMap
+        };
     }
 }

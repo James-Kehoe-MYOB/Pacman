@@ -9,14 +9,14 @@ using Xunit;
 
 namespace PacmanGameTests {
     public class PacmanTests {
-        [Theory (DisplayName = "Pacman should display correctly given its current direction")]
+        [Theory (DisplayName = "Pacman should output correctly given its current direction")]
         [InlineData(Direction.Up, SpriteData.PacUp)]
         [InlineData(Direction.Down, SpriteData.PacDown)]
         [InlineData(Direction.Left, SpriteData.PacLeft)]
         [InlineData(Direction.Right, SpriteData.PacRight)]
         
         public void PacmanShouldDisplayCorrectlyGivenItsCurrentDirection(Direction direction, string display) {
-            var pacman = new Pacman(new Coords{x = 0, y = 0}, direction, new ConsoleDisplay());
+            var pacman = new Pacman(0, 0, direction, new ConsoleOutput());
 
             Assert.Equal(display, pacman.Sprite);
         }
@@ -29,8 +29,8 @@ namespace PacmanGameTests {
 
         public void PacmansDisplayChangesDependingOnKeyPresses(Direction direction, string display) {
             var mock = new Mock<IInput>();
-            var pacman = new Pacman(new Coords{x = 0, y = 0}, Direction.Right, new ConsoleDisplay());
-            mock.Setup(m => m.TakeInput(pacman)).Returns(direction);
+            var pacman = new Pacman(0, 0, Direction.Right, new ConsoleOutput());
+            mock.Setup(m => m.TakeInput(pacman.Direction)).Returns(direction);
             pacman.Update(direction, 1);
             
             Assert.Equal(display, pacman.Sprite);
@@ -49,7 +49,7 @@ namespace PacmanGameTests {
         //
         // public void PacmanShouldMoveAccordingToItsDirectionAndVelocity(Direction direction, int velocity, int expectedX, int expectedY) {
         //
-        //     var pacman = new Pacman(2, 2, Direction.Right, new KeyInput(), new ConsoleDisplay());
+        //     var pacman = new Pacman(2, 2, Direction.Right, new KeyInput(), new ConsoleOutput());
         //     
         //     pacman.Update(direction, velocity);
         //     pacman.ChooseDirection();

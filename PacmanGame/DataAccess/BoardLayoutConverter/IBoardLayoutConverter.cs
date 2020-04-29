@@ -1,7 +1,7 @@
-using PacmanGame.Data.Board_Data;
+using PacmanGame.Data.LevelData;
 
 namespace PacmanGame.DataAccess.BoardLayoutConverter {
     public interface IBoardLayoutConverter {
-        public BoardLayout Convert(int height, int width, string rawData);
+        public LevelLayout Convert(int height, int width, string rawData);
     }
 }

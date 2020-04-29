@@ -4,22 +4,21 @@ using PacmanGame.Data;
 using PacmanGame.Data.Enums;
 
 namespace PacmanGame.Business.Characters {
-    public class Ghost : Character {
+    public class Ghost : ICharacter {
 
-        private IGhostLogic Logic;
+        public readonly IGhostLogic Logic;
         public int X { get; set; }
         public int Y { get; set; }
         public int Velocity { get; set; }
         public Direction Direction { get; set; }
-
         public ConsoleColor Colour { get; set; } = ConsoleColor.Green;
-        public string Sprite { get; set; } = SpriteData.Ghost;
+        public string Sprite { get; } = SpriteData.Ghost;
 
-        public Ghost(Coords coords, Direction startingDirection, IGhostLogic logic) {
-            X = coords.x;
-            Y = coords.y;
+        public Ghost(int x, int y, IGhostLogic logic) {
+            X = x;
+            Y = y;
             Logic = logic;
-            Direction = startingDirection;
+            Direction = ChooseDirection();
         }
 
         public Direction ChooseDirection() {

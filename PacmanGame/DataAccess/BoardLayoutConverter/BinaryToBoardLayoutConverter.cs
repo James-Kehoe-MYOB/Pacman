@@ -1,13 +1,14 @@
 using System;
 using PacmanGame.Business.GameObjects;
-using PacmanGame.Data.Board_Data;
 using PacmanGame.Data.Enums;
+using PacmanGame.Data.Exceptions;
+using PacmanGame.Data.LevelData;
 
 namespace PacmanGame.DataAccess.BoardLayoutConverter {
     public class BinaryToBoardLayoutConverter : IBoardLayoutConverter {
 
-        public BoardLayout Convert(int height, int width, string rawData) {
-            var returnData = new BoardLayout();
+        public LevelLayout Convert(int height, int width, string rawData) {
+            var returnData = new LevelLayout();
 
             var x = 1;
             var y = 1;
@@ -15,7 +16,7 @@ namespace PacmanGame.DataAccess.BoardLayoutConverter {
                 var isWall = c switch {
                     '0' => TileState.Empty,
                     '1' => TileState.Wall,
-                    _ => throw new InvalidBoardDataFormatException()
+                    _ => throw new InvalidLevelDataFormatException()
                 };
                 returnData.Add(new Tile(x, y, isWall));
                 if (x < width) {
@@ -27,16 +28,10 @@ namespace PacmanGame.DataAccess.BoardLayoutConverter {
             }
 
             if (returnData.Count != height * width) {
-                throw new InsufficientBoardDataException();
+                throw new InsufficientLevelDataException();
             }
             
             return returnData;
         }
-    }
-
-    public class InsufficientBoardDataException : Exception {
-    }
-
-    public class InvalidBoardDataFormatException : Exception {
     }
 }

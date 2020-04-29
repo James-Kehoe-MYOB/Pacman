@@ -1,18 +1,18 @@
 using System.Timers;
-using PacmanGame;
-using PacmanGame.Business.Engine.Timer;
 
-namespace PacmanGameTests {
-    public class UpdateOnceTimer : ITimer {
-        private Timer _timer = new Timer();
-        public int Interval { get; set; }
+namespace PacmanGame.Business.Engine.Timer {
+    public class GameTimer : ITimer {
+        
+        private System.Timers.Timer _timer = new System.Timers.Timer();
+
         public void InitTimer(int interval, ElapsedEventHandler function) {
+            _timer = new System.Timers.Timer();
             _timer.Elapsed += function;
-            _timer.Interval = 1;
+            _timer.Interval = interval;
+            _timer.AutoReset = true;
         }
 
         public void Start() {
-            _timer.AutoReset = false;
             _timer.Start();
         }
 
